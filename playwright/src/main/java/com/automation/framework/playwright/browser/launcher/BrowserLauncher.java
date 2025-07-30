@@ -5,5 +5,5 @@ import com.microsoft.playwright.Playwright;
 
 public interface BrowserLauncher {
 
-    Browser launch(Playwright playwright);
+    Browser launch(Playwright playwright, boolean headless);
 }

@@ -15,24 +15,15 @@ public class BrowserFactory {
 
     public static Page createPage() {
 
-        Playwright playwright = Playwright.create();
         Browser browserEnum = getBrowserNaming();
-        BrowserLauncher launcher = switch (browserEnum) {
-            case FIREFOX -> new FirefoxLauncher();
-            case WEBKIT -> new WebkitLauncher();
-            case CHROME -> new ChromiumLauncher();
-        };
-
-        com.microsoft.playwright.Browser browser = launcher.launch(playwright);
-        BrowserContext context = browser.newContext();
-        return context.newPage();
+        return new PageFactory.Builder()
+                .setBrowser(browserEnum)
+                .build();
     }
 
     private static Browser getBrowserNaming() {
 
-        //Allow browser via -Dbrowser or via application.properties
         String browserFromSystem = System.getProperty("browser");
-
         if (browserFromSystem != null && !browserFromSystem.isBlank()) {
             try {
                 return Browser.valueOf(browserFromSystem.trim().toUpperCase());
@@ -40,7 +31,6 @@ public class BrowserFactory {
                 throw new IllegalArgumentException("Invalid browser name passed via -Dbrowser: " + browserFromSystem);
             }
         }
-
         ConfigMapping config = ConfigBootstrap.load(ConfigMapping.class);
         return Browser.valueOf(config.defaultBrowser().toUpperCase());
     }
