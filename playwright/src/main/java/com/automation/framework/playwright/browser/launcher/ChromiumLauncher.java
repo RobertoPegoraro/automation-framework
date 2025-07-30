@@ -7,11 +7,11 @@ import com.microsoft.playwright.Playwright;
 public class ChromiumLauncher implements BrowserLauncher {
 
     @Override
-    public Browser launch(Playwright playwright) {
+    public Browser launch(Playwright playwright, boolean headless) {
 
         return playwright.chromium().launch(
                 new BrowserType.LaunchOptions()
-                        .setHeadless(false)
+                        .setHeadless(headless)
                         .setSlowMo(50)
         );
     }
